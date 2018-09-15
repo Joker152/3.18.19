@@ -212,7 +212,4 @@ bool mtk_is_host_mode(void);
 int mt6332_OpenBoost4Flash(void);
 int mt6332_CloseBoost4Flash(void);
 
-#ifdef VANZO_USE_FLASHLIGHT_GPIO
-int flashlight_gpio_init(struct platform_device *pdev);
-#endif
 #endif
