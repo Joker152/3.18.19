@@ -27,7 +27,7 @@
 #include <linux/fs.h>
 #include <asm/atomic.h>
 //#include <asm/system.h>
-//#include <linux/xlog.h>
+#include <linux/xlog.h>
 
 #include "kd_camera_hw.h"
 #include "kd_imgsensor.h"
@@ -214,7 +214,7 @@ static void write_cmos_sensor(kal_uint32 addr, kal_uint32 para)
     iWriteRegI2C(pu_send_cmd, 3, imgsensor.i2c_write_id);
 }
 
-static void set_dummy(void)
+static void set_dummy()
 {
     LOG_INF("dummyline = %d, dummypixels = %d \n", imgsensor.dummy_line, imgsensor.dummy_pixel);
     /* you can set dummy by imgsensor.dummy_line and imgsensor.dummy_pixel, or you can set dummy by imgsensor.frame_length and imgsensor.line_length */
@@ -225,7 +225,7 @@ static void set_dummy(void)
 
 }    /*    set_dummy  */
 
-static kal_uint32 return_sensor_id(void)
+static kal_uint32 return_sensor_id()
 {
     return ((read_cmos_sensor(0x300A) << 8) | read_cmos_sensor(0x300B));
 }
@@ -1121,7 +1121,7 @@ static void normal_video_setting(kal_uint16 currefps)
     }
 
 }
-static void hs_video_setting(void)
+static void hs_video_setting()
 {
     LOG_INF("E\n");
 
@@ -1186,7 +1186,7 @@ static void hs_video_setting(void)
     mdelay(10);	  
 }
 
-static void slim_video_setting(void)
+static void slim_video_setting()
 {
 
 	#if 0 //preview

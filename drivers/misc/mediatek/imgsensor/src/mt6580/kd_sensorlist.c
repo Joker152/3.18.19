@@ -1701,7 +1701,6 @@ static inline int adopt_CAMERA_HW_CheckIsAlive(void)
 					psensorResolution[1] = &sensorResolution[1];
 					// don't care of the result
 					g_pSensorFunc->SensorGetResolution(psensorResolution);
-					curr_sensor_id = 0;
 					if(g_invokeSocketIdx[i] == DUAL_CAMERA_MAIN_SENSOR)
 						curr_sensor_id = 0;
 					else if(g_invokeSocketIdx[i] == DUAL_CAMERA_SUB_SENSOR)
@@ -1717,23 +1716,6 @@ static inline int adopt_CAMERA_HW_CheckIsAlive(void)
 					PK_DBG
 					    ("ERROR:adopt_CAMERA_HW_CheckIsAlive(), No imgsensor alive\n");
 				}
-/* Vanzo:maxiaojun on: Mon, 26 Aug 2013 17:04:18 +0800
- * board device name support.
- */
-#ifdef VANZO_DEVICE_NAME_SUPPORT
-        {
-          extern void v_set_dev_name(int id, char *name);
-          if(ERROR_NONE == err){
-            if(DUAL_CAMERA_MAIN_SENSOR==g_invokeSocketIdx[i]){
-              v_set_dev_name(3, (char *)g_invokeSensorNameStr[i]);
-            }else if(DUAL_CAMERA_SUB_SENSOR==g_invokeSocketIdx[i]){
-              v_set_dev_name(4, (char *)g_invokeSensorNameStr[i]);
-            }
-          }
-        }
-#endif
-// End of Vanzo:maxiaojun
-
 			}
 		}
 	} else {

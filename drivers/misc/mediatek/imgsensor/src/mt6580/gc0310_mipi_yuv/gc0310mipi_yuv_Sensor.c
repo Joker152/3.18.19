@@ -75,7 +75,7 @@ kal_uint16 GC0310_write_cmos_sensor(kal_uint8 addr, kal_uint8 para)
     char puSendCmd[2] = {(char)(addr & 0xFF) , (char)(para & 0xFF)};
 	
 	iWriteRegI2C(puSendCmd , 2, GC0310_WRITE_ID);
-	return 0;
+
 }
 kal_uint16 GC0310_read_cmos_sensor(kal_uint8 addr)
 {
@@ -258,7 +258,6 @@ UINT32 GC0310_MIPI_SetMaxFramerateByScenario(
   MSDK_SCENARIO_ID_ENUM scenarioId, MUINT32 frameRate)
 {
 	SENSORDB("scenarioId = %d\n", scenarioId);
-	return 0;
 }
 
 
@@ -334,7 +333,7 @@ void GC0310_set_brightness(UINT16 para)
         case ISP_BRIGHT_LOW:
 		//case AE_EV_COMP_n13:
 			GC0310_write_cmos_sensor(0xd5, 0xc0);
-			Sleep(5);
+			Sleep(200);
 			
 		//	GC0310_SET_PAGE1;
 		//	GC0310_write_cmos_sensor(0x13, 0x30);
@@ -342,8 +341,8 @@ void GC0310_set_brightness(UINT16 para)
 		break;
         case ISP_BRIGHT_HIGH:
 		//case AE_EV_COMP_13:
-			GC0310_write_cmos_sensor(0xd5, 0x70);
-			Sleep(5);
+			GC0310_write_cmos_sensor(0xd5, 0x40);
+			Sleep(200);
 		//	GC0310_SET_PAGE1;
 		//	GC0310_write_cmos_sensor(0x13, 0x90);
 		//	GC0310_SET_PAGE0;
@@ -351,8 +350,8 @@ void GC0310_set_brightness(UINT16 para)
         case ISP_BRIGHT_MIDDLE:
         default:
 		//case AE_EV_COMP_00:
-			GC0310_write_cmos_sensor(0xd5, 0x40);
-			Sleep(5);
+			GC0310_write_cmos_sensor(0xd5, 0x00);
+			Sleep(200);
 		//	GC0310_SET_PAGE1;
 		//	GC0310_write_cmos_sensor(0x13, 0x60);
 		//	GC0310_SET_PAGE0;
@@ -396,37 +395,6 @@ void GC0310_set_saturation(UINT16 para)
      return;
     
 }
-
-void GC0310_set_edge(UINT16 para)
-{
-	SENSORDB("[GC3010]CONTROLFLOW enter GC3010_set_saturation function:\n ");
-
-    switch (para)
-    {
-        case ISP_SAT_HIGH:
-			GC0310_write_cmos_sensor(0xfe, 0x00); 	
-			GC0310_write_cmos_sensor(0x95, 0x65);		
-			GC0310_write_cmos_sensor(0xfe, 0x00);
-			break;
-        case ISP_SAT_LOW:
-			GC0310_write_cmos_sensor(0xfe, 0x00); 	
-			GC0310_write_cmos_sensor(0x95, 0x25);
-			GC0310_write_cmos_sensor(0xfe, 0x00);
-			break;
-        case ISP_SAT_MIDDLE:
-        default:
-			GC0310_write_cmos_sensor(0xfe, 0x00); 	
-			GC0310_write_cmos_sensor(0x95, 0x45);
-			GC0310_write_cmos_sensor(0xfe, 0x00);
-			break;
-		//	return KAL_FALSE;
-		//	break;
-    }
-	SENSORDB("[GC0310]exit GC0310MIPI_set_saturation function:\n ");
-     return;
-    
-}
-
 
 void GC0310_set_iso(UINT16 para)
 {
@@ -473,7 +441,7 @@ void GC0310StreamOn(void)
     Sleep(50);	
 }
 
-void GC0310_MIPI_GetDelayInfo(uintptr_t delayAddr)
+void GC0310_MIPI_GetDelayInfo(UINT32 *delayAddr)
 {
     SENSOR_DELAY_INFO_STRUCT* pDelayInfo = (SENSOR_DELAY_INFO_STRUCT*)delayAddr;
     pDelayInfo->InitDelay = 2;
@@ -549,7 +517,7 @@ void GC0310_3ACtrl(ACDK_SENSOR_3A_LOCK_ENUM action)
 }
 
 
-void GC0310_MIPI_GetExifInfo(uintptr_t exifAddr)
+void GC0310_MIPI_GetExifInfo(UINT32 *exifAddr)
 {
     SENSOR_EXIF_INFO_STRUCT* pExifInfo = (SENSOR_EXIF_INFO_STRUCT*)exifAddr;
     pExifInfo->FNumber = 28;
@@ -561,14 +529,14 @@ void GC0310_MIPI_GetExifInfo(uintptr_t exifAddr)
         //S5K4ECGX_Driver.isoSpeed;
 }
 
-#if 0
-void GC0310_MIPI_get_AEAWB_lock(uintptr_t pAElockRet32, uintptr_t pAWBlockRet32)
+
+void GC0310_MIPI_get_AEAWB_lock(UINT32 *pAElockRet32,UINT32 *pAWBlockRet32)
 {
     *pAElockRet32 = 1;
     *pAWBlockRet32 = 1;
-    SENSORDB("[GC0310]GetAEAWBLock,AE=%d ,AWB=%d\n,",(int)*pAElockRet32, (int)*pAWBlockRet32);
+    SENSORDB("[GC0310]GetAEAWBLock,AE=%d ,AWB=%d\n,",*pAElockRet32,*pAWBlockRet32);
 }
-#endif
+
 
 /*************************************************************************
  * FUNCTION
@@ -1487,8 +1455,8 @@ UINT32 GC0310Preview(MSDK_SENSOR_EXPOSURE_WINDOW_STRUCT *image_window,
         MSDK_SENSOR_CONFIG_STRUCT *sensor_config_data)
 
 {
- //   kal_uint32 iTemp;
-//    kal_uint16 iStartX = 0, iStartY = 1;
+    kal_uint32 iTemp;
+    kal_uint16 iStartX = 0, iStartY = 1;
 
 	SENSORDB("Enter GC0310Preview function!!!\r\n");
 //	GC0310StreamOn();
@@ -1801,22 +1769,22 @@ BOOL GC0310_set_param_banding(UINT16 para)
 		case AE_FLICKER_MODE_60HZ:
 			GC0310_write_cmos_sensor(0xfe, 0x00); 
 			GC0310_write_cmos_sensor(0x05, 0x01); 	
-			GC0310_write_cmos_sensor(0x06, 0x58); 
+			GC0310_write_cmos_sensor(0x06, 0x13); 
 			GC0310_write_cmos_sensor(0x07, 0x00);
-			GC0310_write_cmos_sensor(0x08, 0x32);
+			GC0310_write_cmos_sensor(0x08, 0x10);
 			
 			GC0310_write_cmos_sensor(0xfe, 0x01);
 			GC0310_write_cmos_sensor(0x25, 0x00);   //anti-flicker step [11:8]
-			GC0310_write_cmos_sensor(0x26, 0xd0);	//anti-flicker step [7:0]
+			GC0310_write_cmos_sensor(0x26, 0x81);	//anti-flicker step [7:0]
 			
-			GC0310_write_cmos_sensor(0x27, 0x04);	//exp level 0  30fps
-			GC0310_write_cmos_sensor(0x28, 0xe0); 
-			GC0310_write_cmos_sensor(0x29, 0x06);	//exp level 1  15fps
-			GC0310_write_cmos_sensor(0x2a, 0x80); 
-			GC0310_write_cmos_sensor(0x2b, 0x08);	//exp level 2  10fps
-			GC0310_write_cmos_sensor(0x2c, 0x20); 
-			GC0310_write_cmos_sensor(0x2d, 0x0b);	//exp level 3 8fps
-			GC0310_write_cmos_sensor(0x2e, 0x60);	
+			GC0310_write_cmos_sensor(0x27, 0x01);	//exp level 0  30fps
+			GC0310_write_cmos_sensor(0x28, 0x83); 
+			GC0310_write_cmos_sensor(0x29, 0x04);	//exp level 1  15fps
+			GC0310_write_cmos_sensor(0x2a, 0x08); 
+			GC0310_write_cmos_sensor(0x2b, 0x06);	//exp level 2  10fps
+			GC0310_write_cmos_sensor(0x2c, 0x0c); 
+			GC0310_write_cmos_sensor(0x2d, 0x09);	//exp level 3 8fps
+			GC0310_write_cmos_sensor(0x2e, 0x93);	
 			GC0310_write_cmos_sensor(0xfe, 0x00);
 
 		break;
@@ -1936,9 +1904,6 @@ UINT32 GC0310YUVSensorSetting(FEATURE_ID iCmd, UINT16 iPara)
 	case FID_ISP_SAT:
 		GC0310_set_saturation(iPara);
 		break; 
-	case FID_ISP_EDGE:
-		GC0310_set_edge(iPara);
-		break; 
 	case FID_AE_ISO:
 		GC0310_set_iso(iPara);
 		break;	
@@ -1957,15 +1922,12 @@ UINT32 GC0310FeatureControl(MSDK_SENSOR_FEATURE_ENUM FeatureId,
         UINT8 *pFeaturePara,UINT32 *pFeatureParaLen)
 {
     UINT16 *pFeatureReturnPara16=(UINT16 *) pFeaturePara;
-//    UINT16 *pFeatureData16=(UINT16 *) pFeaturePara;
+    UINT16 *pFeatureData16=(UINT16 *) pFeaturePara;
     UINT32 *pFeatureReturnPara32=(UINT32 *) pFeaturePara;
     UINT32 *pFeatureData32=(UINT32 *) pFeaturePara;
- //   UINT32 **ppFeatureData=(UINT32 **) pFeaturePara;
-    unsigned long long *feature_data=(unsigned long long *) pFeaturePara;
- //   unsigned long long *feature_return_para=(unsigned long long *) pFeaturePara;
-	
-   // UINT32 GC0310SensorRegNumber;
-  //  UINT32 i;
+    UINT32 **ppFeatureData=(UINT32 **) pFeaturePara;
+    UINT32 GC0310SensorRegNumber;
+    UINT32 i;
     MSDK_SENSOR_CONFIG_STRUCT *pSensorConfigData=(MSDK_SENSOR_CONFIG_STRUCT *) pFeaturePara;
     MSDK_SENSOR_REG_INFO_STRUCT *pSensorRegData=(MSDK_SENSOR_REG_INFO_STRUCT *) pFeaturePara;
 
@@ -1988,7 +1950,7 @@ UINT32 GC0310FeatureControl(MSDK_SENSOR_FEATURE_ENUM FeatureId,
     case SENSOR_FEATURE_SET_ESHUTTER:
         break;
     case SENSOR_FEATURE_SET_NIGHTMODE:
-        GC0310NightMode((BOOL) *feature_data);
+        GC0310NightMode((BOOL) *pFeatureData16);
         break;
     case SENSOR_FEATURE_SET_GAIN:
     case SENSOR_FEATURE_SET_FLASHLIGHT:
@@ -2026,11 +1988,11 @@ UINT32 GC0310FeatureControl(MSDK_SENSOR_FEATURE_ENUM FeatureId,
         *pFeatureParaLen=4;
         break;
     case SENSOR_FEATURE_SET_YUV_CMD:
-        GC0310YUVSensorSetting((FEATURE_ID)*feature_data, *(feature_data+1));
+        GC0310YUVSensorSetting((FEATURE_ID)*pFeatureData32, *(pFeatureData32+1));
         
         break;
     case SENSOR_FEATURE_SET_VIDEO_MODE:    //  lanking
-	 GC0310YUVSetVideoMode(*feature_data);
+	 GC0310YUVSetVideoMode(*pFeatureData16);
 	 break;
     case SENSOR_FEATURE_CHECK_SENSOR_ID:
 	GC0310GetSensorID(pFeatureData32);
@@ -2042,7 +2004,7 @@ UINT32 GC0310FeatureControl(MSDK_SENSOR_FEATURE_ENUM FeatureId,
 
 	case SENSOR_FEATURE_SET_MAX_FRAME_RATE_BY_SCENARIO:
 		 SENSORDB("[GC0310] F_SET_MAX_FRAME_RATE_BY_SCENARIO.\n");
-		 GC0310_MIPI_SetMaxFramerateByScenario((MSDK_SCENARIO_ID_ENUM)*feature_data, *(feature_data+1));
+		 GC0310_MIPI_SetMaxFramerateByScenario((MSDK_SCENARIO_ID_ENUM)*pFeatureData32, *(pFeatureData32+1));
 		 break;
 
 //	case SENSOR_CMD_SET_VIDEO_FRAME_RATE:
@@ -2051,39 +2013,39 @@ UINT32 GC0310FeatureControl(MSDK_SENSOR_FEATURE_ENUM FeatureId,
 //		break;
 
 	case SENSOR_FEATURE_SET_TEST_PATTERN:			 
-		GC0310SetTestPatternMode((BOOL)*feature_data);			
+		GC0310SetTestPatternMode((BOOL)*pFeatureData16);			
 		break;
 
     case SENSOR_FEATURE_GET_DELAY_INFO:
         SENSORDB("[GC0310] F_GET_DELAY_INFO\n");
-        GC0310_MIPI_GetDelayInfo((uintptr_t)*feature_data);
+        GC0310_MIPI_GetDelayInfo(*ppFeatureData);
     break;
 
     case SENSOR_FEATURE_GET_DEFAULT_FRAME_RATE_BY_SCENARIO:
          SENSORDB("[GC0310] F_GET_DEFAULT_FRAME_RATE_BY_SCENARIO\n");
-         GC0310_MIPI_GetDefaultFramerateByScenario((MSDK_SCENARIO_ID_ENUM)*feature_data, (MUINT32 *)(uintptr_t)(*(feature_data+1)));
+         GC0310_MIPI_GetDefaultFramerateByScenario((MSDK_SCENARIO_ID_ENUM)*ppFeatureData, (MUINT32 *)(*(ppFeatureData+1)));
     break;   
     
 	case SENSOR_FEATURE_SET_YUV_3A_CMD:
 		 SENSORDB("[GC0310] SENSOR_FEATURE_SET_YUV_3A_CMD ID:%d\n", *pFeatureData32);
-		 GC0310_3ACtrl((ACDK_SENSOR_3A_LOCK_ENUM)*feature_data);
+		 GC0310_3ACtrl((ACDK_SENSOR_3A_LOCK_ENUM)*pFeatureData32);
 		 break;
 
 
 	case SENSOR_FEATURE_GET_EXIF_INFO:
 		 //SENSORDB("[4EC] F_GET_EXIF_INFO\n");
-		 GC0310_MIPI_GetExifInfo((uintptr_t)*feature_data);
+		 GC0310_MIPI_GetExifInfo(*ppFeatureData);
 		 break;
 
 
 	case SENSOR_FEATURE_GET_AE_AWB_LOCK_INFO:
 		 SENSORDB("[GC0310] F_GET_AE_AWB_LOCK_INFO\n");
-		 //GC0310_MIPI_get_AEAWB_lock((uintptr_t)(*feature_data), (uintptr_t)*(feature_data+1));
+		 GC0310_MIPI_get_AEAWB_lock((*pFeatureData32),*(pFeatureData32+1));
 	break;    
 
 	case SENSOR_FEATURE_SET_MIN_MAX_FPS:
 		SENSORDB("SENSOR_FEATURE_SET_MIN_MAX_FPS:[%d,%d]\n",*pFeatureData32,*(pFeatureData32+1)); 
-		GC0310_MIPI_SetMaxMinFps((UINT32)*feature_data, (UINT32)*(feature_data+1));
+		GC0310_MIPI_SetMaxMinFps((UINT32)*pFeatureData32, (UINT32)*(pFeatureData32+1));
 	break; 
 	
     default:

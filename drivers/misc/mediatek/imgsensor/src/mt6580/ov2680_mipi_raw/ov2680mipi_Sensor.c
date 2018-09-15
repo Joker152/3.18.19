@@ -27,10 +27,7 @@
 #include <linux/fs.h>
 #include <asm/atomic.h>
 //#include <asm/system.h>
-#include <linux/types.h>
-
-#include "kd_camera_typedef.h"
-
+#include <linux/xlog.h>
 
 #include "kd_camera_hw.h"
 #include "kd_imgsensor.h"
@@ -210,7 +207,7 @@ static void write_cmos_sensor(kal_uint32 addr, kal_uint32 para)
 	iWriteRegI2C(pu_send_cmd, 3, imgsensor.i2c_write_id);
 }
 
-static void set_dummy(void)
+static void set_dummy()
 {
 	LOG_INF("dummyline = %d, dummypixels = %d \n", imgsensor.dummy_line, imgsensor.dummy_pixel);
 	/* you can set dummy by imgsensor.dummy_line and imgsensor.dummy_pixel, or you can set dummy by imgsensor.frame_length and imgsensor.line_length */
@@ -227,13 +224,13 @@ static void set_dummy(void)
   
 }	/*	set_dummy  */
 
-static kal_uint32 return_sensor_id(void)
+static kal_uint32 return_sensor_id()
 {
     return ((read_cmos_sensor(0x300A) << 8) | read_cmos_sensor(0x300B));
 }
 static void set_max_framerate(UINT16 framerate,kal_bool min_framelength_en)
 {
-	//kal_int16 dummy_line;
+	kal_int16 dummy_line;
 	kal_uint32 frame_length = imgsensor.frame_length;
 	//unsigned long flags;
 
@@ -265,7 +262,7 @@ static void set_shutter(kal_uint16 shutter)
 {
     unsigned long flags;
 	kal_uint16 realtime_fps = 0;
-	//kal_uint32 frame_length = 0;
+	kal_uint32 frame_length = 0;
     spin_lock_irqsave(&imgsensor_drv_lock, flags);
     imgsensor.shutter = shutter;
     spin_unlock_irqrestore(&imgsensor_drv_lock, flags);
@@ -318,7 +315,7 @@ static void set_shutter(kal_uint16 shutter)
 }	/*	set_shutter */
 
 
-#if 0
+
 static kal_uint16 gain2reg(const kal_uint16 gain)
 {
 	
@@ -329,7 +326,7 @@ static kal_uint16 gain2reg(const kal_uint16 gain)
 	*/
 	return (kal_uint16)reg_gain;
 }
-#endif
+
 /*************************************************************************
 * FUNCTION
 *	set_gain
@@ -417,7 +414,7 @@ static void ihdr_write_shutter_gain(kal_uint16 le, kal_uint16 se, kal_uint16 gai
 	}
 
 }
-#if 0
+
 static void set_mirror_flip(kal_uint8 image_mirror)
 {
 	LOG_INF("image_mirror = %d\n", image_mirror);
@@ -456,7 +453,7 @@ static void set_mirror_flip(kal_uint8 image_mirror)
 	}
 
 }
-#endif
+
 /*************************************************************************
 * FUNCTION
 *	night_mode
@@ -635,7 +632,7 @@ static void normal_video_setting(kal_uint16 currefps)
 	LOG_INF("E! currefps:%d\n",currefps);
 	preview_setting();
 }
-static void hs_video_setting(void)
+static void hs_video_setting()
 {
 	LOG_INF("E\n");
 		
@@ -684,7 +681,7 @@ static void hs_video_setting(void)
 	mdelay(60);
 }
 
-static void slim_video_setting(void)
+static void slim_video_setting()
 {
 	LOG_INF("E\n");
 	preview_setting();
@@ -1299,7 +1296,7 @@ static kal_uint32 feature_control(MSDK_SENSOR_FEATURE_ENUM feature_id,
 	UINT32 *feature_return_para_32=(UINT32 *) feature_para;
 	UINT32 *feature_data_32=(UINT32 *) feature_para;
 	unsigned long long *feature_data=(unsigned long long *) feature_para;
-    //unsigned long long *feature_return_para=(unsigned long long *) feature_para;
+    unsigned long long *feature_return_para=(unsigned long long *) feature_para;
 
 	SENSOR_WINSIZE_INFO_STRUCT *wininfo;	
 	MSDK_SENSOR_REG_INFO_STRUCT *sensor_reg_data=(MSDK_SENSOR_REG_INFO_STRUCT *) feature_para;
