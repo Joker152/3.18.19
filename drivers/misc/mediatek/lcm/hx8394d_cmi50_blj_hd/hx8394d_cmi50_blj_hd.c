@@ -364,11 +364,11 @@ static void lcm_suspend(void)
 	MDELAY(150);
 
 	data_array[0]=0x00280500; // Display Off
-	dsi_set_cmdq(&data_array, 1, 1);
+	dsi_set_cmdq(data_array, 1, 1);
 	MDELAY(20);
 
 	data_array[0] = 0x00100500; // Sleep In
-	dsi_set_cmdq(&data_array, 1, 1);
+	dsi_set_cmdq(data_array, 1, 1);
 	MDELAY(120);
 }
 
@@ -376,7 +376,6 @@ static void lcm_suspend(void)
 static void lcm_resume(void)
 {
 #ifndef BUILD_LK
-	unsigned int data_array[16];
 	lcm_init();
 	//push_table(lcm_sleep_out_setting, sizeof(lcm_sleep_out_setting) / sizeof(struct LCM_setting_table), 1);
 #endif
@@ -422,47 +421,6 @@ static unsigned int lcm_compare_id(void)
   return (LCM_ID == id)?1:0;
 }
 
-static unsigned int lcm_esd_check(void)
-{
-	int temp0=0,temp1=0,temp2=0,temp3=0;
-
-#ifndef BUILD_LK
-	char  buffer[3];
-	int   array[4];
-
-	//printk("xcz enter lcm_esd_check---\n");
-
-	array[0] = 0x00013700;
-	dsi_set_cmdq(array, 1, 1);
-	read_reg_v2(0x0a, buffer, 1);
-        temp0 = buffer[0];
-        read_reg_v2(0x09, buffer, 3);
-        temp1 = buffer[0];//0x80
-        temp2 = buffer[1];//0x73
-
-	//printk("xcz enter lcm_esd_check---, temp0 = %x, temp1 = %x, temp2 = %x,\n", temp0, temp1, temp2);
-	if((0x1c == temp0)&&(0x80 == temp1)&&(0x73 == temp2))
-	{
-		//printk("%s %d\n FALSE", __func__, __LINE__);
-		return FALSE;
-	}
-	else
-	{		 
-		return TRUE;
-	}
-#endif
-}
-
-static unsigned int lcm_esd_recover(void)
-{
-#ifndef BUILD_LK
-	//printk("xcz enter lcm_esd_recover---\n");
-#endif
-
-	lcm_init();	
-	return TRUE;
-}
-
 
 // ---------------------------------------------------------------------------
 //  Get LCM Driver Hooks
@@ -475,8 +433,6 @@ LCM_DRIVER hx8394d_cmi50_blj_hd_lcm_drv= {
 	.suspend        = lcm_suspend,
 	.resume         = lcm_resume,
 	.compare_id    = lcm_compare_id,
-	//.esd_check	= lcm_esd_check,
-	//.esd_recover	= lcm_esd_recover,
 	.init_power        = lcm_init_power,
 	.resume_power = lcm_resume_power,
 	.suspend_power = lcm_suspend_power,
