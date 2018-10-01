@@ -180,6 +180,7 @@ NSFeature :  : RAWSensorInfo < _id >  :  : getFlickerPara \
 #define HI707_SENSOR_ID                         0x00b8
 #define HI704_SENSOR_ID                         0x0096
 #define HI551_SENSOR_ID                         0x0551
+#define HI553_SENSOR_ID                         0x0553
 #define HI545MIPI_SENSOR_ID                     0x0545
 #define HI544MIPI_SENSOR_ID                     0x0544
 #define HI542_SENSOR_ID                         0x00B1
@@ -214,6 +215,9 @@ NSFeature :  : RAWSensorInfo < _id >  :  : getFlickerPara \
 #define MT9P017MIPI_SENSOR_ID                   0x4800
 #define MT9T113MIPI_SENSOR_ID                   0x4680
 /*GC*/
+#define GC5005MIPI_SENSOR_ID                    0x5005
+#define GC5024MIPI_SENSOR_ID                    0x5024
+#define GC5025MIPI_SENSOR_ID                    0x5025
 #define GC2355_SENSOR_ID                        0x2355
 #define GC2235_SENSOR_ID                        0x2235
 #define GC2035_SENSOR_ID                        0x2035
@@ -252,6 +256,7 @@ NSFeature :  : RAWSensorInfo < _id >  :  : getFlickerPara \
 #define PAS6180_SENSOR_ID                       0x6179
 /*Panasoic*/
 #define MN34152_SENSOR_ID                       0x01
+#define MN045MIPI_SENSOR_ID                     0x6017
 /*Toshiba*/
 #define T4KA7_SENSOR_ID                         0x2c30
 /*Others*/
@@ -336,6 +341,7 @@ NSFeature :  : RAWSensorInfo < _id >  :  : getFlickerPara \
 #define SENSOR_DRVNAME_HI707_YUV                "hi707yuv"
 #define SENSOR_DRVNAME_HI704_YUV                "hi704yuv"
 #define SENSOR_DRVNAME_HI551_MIPI_RAW           "hi551mipiraw"
+#define SENSOR_DRVNAME_HI553_MIPI_RAW           "hi553mipiraw"
 #define SENSOR_DRVNAME_HI545_MIPI_RAW           "hi545mipiraw"
 #define SENSOR_DRVNAME_HI542_RAW                "hi542raw"
 #define SENSOR_DRVNAME_HI542MIPI_RAW            "hi542mipiraw"
@@ -354,6 +360,9 @@ NSFeature :  : RAWSensorInfo < _id >  :  : getFlickerPara \
 #define SENSOR_DRVNAME_MT9V113_YUV              "mt9v113yuv"
 #define SENSOR_DRVNAME_MT9T113_MIPI_YUV         "mt9t113mipiyuv"
 /*GC*/
+#define SENSOR_DRVNAME_GC5005_MIPI_RAW          "gc5005mipiraw"
+#define SENSOR_DRVNAME_GC5024_MIPI_RAW          "gc5024mipiraw"
+#define SENSOR_DRVNAME_GC5025_MIPI_RAW          "gc5025mipiraw"
 #define SENSOR_DRVNAME_GC2035_YUV               "gc2035_yuv"
 #define SENSOR_DRVNAME_GC2235_RAW               "gc2235_raw"
 #define SENSOR_DRVNAME_GC2355_MIPI_RAW          "gc2355mipiraw"
@@ -381,6 +390,7 @@ NSFeature :  : RAWSensorInfo < _id >  :  : getFlickerPara \
 #define SENSOR_DRVNAME_PAS6180_SERIAL_YUV       "pas6180serialyuv"
 /*Panasoic*/
 #define SENSOR_DRVNAME_MN34152_MIPI_RAW         "mn34152mipiraw"
+#define SENSOR_DRVNAME_MN045_MIPI_RAW           "mn045mipiraw"
 /*Toshiba*/
 #define SENSOR_DRVNAME_T4KA7_MIPI_RAW           "t4ka7mipiraw"
 /*Others*/
