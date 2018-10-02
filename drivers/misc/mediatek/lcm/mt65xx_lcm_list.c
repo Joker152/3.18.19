@@ -23,31 +23,31 @@ LCM_DRIVER *lcm_driver_list[] = {
 #if defined(MTK_LCM_DEVICE_TREE_SUPPORT)
 	&lcm_common_drv,
 #else
+#if defined(OTM1283A_CMI50_TPS65132_HD)
+	&otm1283a_cmi50_tps65132_hd_lcm_drv,
+#endif
+
+#if defined(NT35521_BOE50_BLJ_HD)
+	&nt35521_boe50_blj_hd_lcm_drv,
+#endif
 #if defined(HX8394D_CMI50_BLJ_HD)
 	&hx8394d_cmi50_blj_hd_lcm_drv,
 #endif
-#if defined(OTM1285A_HD720_DSI_VDO_TM)
-	&otm1285a_hd720_dsi_vdo_tm_lcm_drv,
+
+#if defined(JD9365_INX50_JMG_HD)
+	&jd9365_inx50_jmg_hd_lcm_drv,
 #endif
 
-#if defined(EK79007_WSVGALNL_DSI_VDO)
-	&ek79007_wsvgalnl_dsi_vdo_lcm_drv,
+#if defined(RM68200_CPT50_BLJ_HD)
+	&rm68200_cpt50_blj_hd_lcm_drv,
 #endif
 
-#if defined(S6E3FA2_FHD1080_DSI_VDO)
-	&s6e3fa2_fhd1080_dsi_vdo_lcm_drv,
+#if defined(ILI9881C_AUO50_XZX_HD)
+	&ili9881c_auo50_xzx_hd_lcm_drv,
 #endif
 
-#if defined(OTM1283A_HD720_DSI_VDO_TM)
-	&otm1283a_hd720_dsi_vdo_tm_lcm_drv,
-#endif
-
-#if defined(IT6151_LP079QX1_EDP_DSI_VIDEO)
-	&it6151_lp079qx1_edp_dsi_video_lcm_drv,
-#endif
-
-#if defined(VVX10F008B00_WUXGA_DSI_VDO)
-	&vvx10f008b00_wuxga_dsi_vdo_lcm_drv,
+#if defined(RM68200_TM50_XLD_HD)
+	&rm68200_tm50_xld_hd_lcm_drv,
 #endif
 
 #if defined(KR101IA2S_DSI_VDO)

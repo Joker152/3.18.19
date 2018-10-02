@@ -12,7 +12,7 @@
 #include <linux/cdev.h>
 #include <linux/types.h>
 #include <linux/of_irq.h>
-#include "../../../spi/mediatek/mt6735/mt_spi.h"
+#include "../../../spi/mediatek/mt6580/mt_spi.h"
 
 #include <linux/init.h>
 #include <linux/module.h>
